@@ -8,7 +8,7 @@ from spotipy.oauth2 import SpotifyOAuth
 # YouTube Data API setup
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-youtube_client_secrets_file = os.getenv("YOUTUBE_CLIENT_SECRETS_FILE")
+youtube_client_secrets_file = "client.json"
 youtube_api_service_name = "youtube"
 youtube_api_version = "v3"
 
@@ -91,8 +91,8 @@ def main(youtube_playlist_id, spotify_playlist_name, spotify_playlist_descriptio
 
 
 if __name__ == "__main__":
-    youtube_playlist_id = "YOUR_YOUTUBE_PLAYLIST_ID"  # Replace with your YouTube playlist ID
-    spotify_playlist_name = "Your Spotify Playlist Name"
-    spotify_playlist_description = "Description for your Spotify playlist"
+    youtube_playlist_id = os.getenv("YOUTUBE_PLAYLIST_ID")
+    spotify_playlist_name = os.getenv("SPOTIFY_PLAYLIST_NAME")
+    spotify_playlist_description = os.getenv("SPOTIFY_PLAYLIST_DESCRIPTION")
 
     main(youtube_playlist_id, spotify_playlist_name, spotify_playlist_description)
