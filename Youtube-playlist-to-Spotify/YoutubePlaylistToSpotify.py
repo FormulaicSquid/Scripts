@@ -22,7 +22,7 @@ spotify_redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
 def youtube_authenticate():
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
         youtube_client_secrets_file, scopes)
-    credentials = flow.run_console()
+    credentials = flow.run_local_server(port=0)
     youtube = googleapiclient.discovery.build(
         youtube_api_service_name, youtube_api_version, credentials=credentials)
     return youtube
