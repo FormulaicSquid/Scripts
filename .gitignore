@@ -2,5 +2,7 @@
 .idea
 .env
 Youtube-playlist-to-Spotify/client.json
-
+.DS_Store
+Youtube-playlist-to-Spotify/.DS_Store
+Youtube-playlist-to-Spotify/.cache
 ```

@@ -52,3 +52,9 @@ SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 SPOTIFY_REDIRECT_URI=your_spotify_redirect_uri
 YOUTUBE_CLIENT_SECRETS_FILE=path/to/your/client_secret.json
 ```
+
+
+How to get your Youtube Playlists in text.
+
+Go to Google Takeout https://takeout.google.com/
+Select only Youtube, then in the multiple data option, select only playlists and download the data.

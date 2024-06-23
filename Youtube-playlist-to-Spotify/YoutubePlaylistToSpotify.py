@@ -1,46 +1,44 @@
 import os
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
-import googleapiclient.errors
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-
-# YouTube Data API setup
-scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-youtube_client_secrets_file = "client.json"
-youtube_api_service_name = "youtube"
-youtube_api_version = "v3"
+import pandas as pd
+from dotenv import load_dotenv
 
 # Spotify API setup
+load_dotenv()
 spotify_client_id = os.getenv("SPOTIFY_CLIENT_ID")
 spotify_client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
 spotify_redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI")
 
 
-# Authentication for YouTube
-def youtube_authenticate():
-    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        youtube_client_secrets_file, scopes)
-    credentials = flow.run_local_server(port=0)
-    youtube = googleapiclient.discovery.build(
-        youtube_api_service_name, youtube_api_version, credentials=credentials)
-    return youtube
+# Fetch YouTube playlist items from CSV
+def get_playlists_from_csv(folder_path):
+    playlists = {}
 
+    # Iterate through each file in the folder
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith('.csv'):
+            # Construct the full file path
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, 'r') as file:
+                first_line = file.readline().strip()
+                if 'title' not in first_line:
+                    # Remove first 5 lines, and make 6th line the headers of columns
+                    lines = file.readlines()[4:]
+                    with open(file_path, 'w') as file:
+                        file.writelines(lines)
+            # Get the playlist title from the file name (without extension)
+            playlist_title = os.path.splitext(file_name)[0]
+            # Read the CSV file
+            df = pd.read_csv(file_path)
+            # Assuming the song titles are in a column named 'title'
+            if 'title' in df.columns:
+                songs = df['title'].tolist()
+                playlists[playlist_title] = songs
+            else:
+                print(f"Warning: 'title' column not found in {file_name}")
 
-# Fetch YouTube playlist items
-def get_youtube_playlist_items(youtube, playlist_id):
-    request = youtube.playlistItems().list(
-        part="snippet",
-        maxResults=50,
-        playlistId=playlist_id
-    )
-    response = request.execute()
-    songs = []
-    for item in response["items"]:
-        title = item["snippet"]["title"]
-        songs.append(title)
-    return songs
+    return playlists
 
 
 # Authentication for Spotify
@@ -74,25 +72,24 @@ def add_songs_to_spotify_playlist(sp, playlist_id, songs):
     return failed_songs
 
 
-def main(youtube_playlist_id, spotify_playlist_name, spotify_playlist_description):
-    youtube = youtube_authenticate()
+def main(folder_path):
+    youtube_playlists = get_playlists_from_csv(folder_path)
     sp = spotify_authenticate()
+    # Iterate through the dictionary
+    for playlist_name, youtube_songs in youtube_playlists.items():
+        spotify_playlist_name = playlist_name
+        spotify_playlist_description = f"Spotify playlist created from the YouTube playlist: {playlist_name}"
+        spotify_playlist_id = create_spotify_playlist(sp, spotify_playlist_name, spotify_playlist_description)
+        failed_songs = add_songs_to_spotify_playlist(sp, spotify_playlist_id, youtube_songs)
 
-    youtube_songs = get_youtube_playlist_items(youtube, youtube_playlist_id)
-    spotify_playlist_id = create_spotify_playlist(sp, spotify_playlist_name, spotify_playlist_description)
-    failed_songs = add_songs_to_spotify_playlist(sp, spotify_playlist_id, youtube_songs)
-
-    if failed_songs:
-        print("The following songs could not be transferred:")
-        for song in failed_songs:
-            print(song)
-    else:
-        print("All songs were successfully transferred!")
+        if failed_songs:
+            print(f"The following songs could not be transferred for {playlist_name}:")
+            for song in failed_songs:
+                print(song)
+        else:
+            print(f"All songs were successfully transferred for {playlist_name}!")
 
 
 if __name__ == "__main__":
-    youtube_playlist_id = os.getenv("YOUTUBE_PLAYLIST_ID")
-    spotify_playlist_name = os.getenv("SPOTIFY_PLAYLIST_NAME")
-    spotify_playlist_description = os.getenv("SPOTIFY_PLAYLIST_DESCRIPTION")
-
-    main(youtube_playlist_id, spotify_playlist_name, spotify_playlist_description)
+    folder_path = "./playlists/"
+    main(folder_path)
