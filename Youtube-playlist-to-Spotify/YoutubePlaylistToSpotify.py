@@ -4,7 +4,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import pandas
 from dotenv import load_dotenv
 
-# Spotify API setup, grab credentilas from .env file
+# Spotify API setup, grab credentials from .env file
 load_dotenv()
 spotify_client_id = os.getenv("SPOTIFY_CLIENT_ID")
 spotify_client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -16,11 +16,11 @@ def remove_extra_info_from_csv(file_path):
         first_line = file.readline().strip()
         if 'title' not in first_line:
             lines = file.readlines()[4:]
-            with open(file_path, 'w') as file:
-                file.writelines(lines)
+            with open(file_path, 'w') as same_file:
+                same_file.writelines(lines)
 
 
-def get_a_single_playlist_from_a_single_csv(file_name):
+def get_a_single_playlist_from_a_single_csv(folder_path, file_name):
     if file_name.endswith('.csv'):
         file_path = os.path.join(folder_path, file_name)
         remove_extra_info_from_csv(file_path)
@@ -38,8 +38,8 @@ def get_playlists_from_multiple_csv(folder_path):
     playlists = {}
 
     for file_name in os.listdir(folder_path):
-        playlist_title_without_file_extension = os.path.splitext(file_name)[0]
-        playlists[playlist_title_without_file_extension] = get_a_single_playlist_from_a_single_csv(file_name)
+        playlist_title = os.path.splitext(file_name)[0]
+        playlists[playlist_title] = get_a_single_playlist_from_a_single_csv(folder_path, file_name)
 
     return playlists
 
