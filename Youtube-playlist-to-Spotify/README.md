@@ -12,16 +12,6 @@ a csv of the desired playlist.
 - Save the csv file in the playlists folder, and give it an appropriate name.
 - You can have multiple CSVs from Multiple playlists at the same time if you desire.
 
-## Create a `.env` File
-Then, create a `.env` file in the root directory of your project. This file will store your API credentials and IDs.
-The values you gather from the steps below will be plugged into this `.env` file.
-
-```env
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-SPOTIFY_REDIRECT_URI=your_spotify_redirect_uri
-```
-
 ## Spotify API Credentials
 
 ### 1. Create a Spotify Developer Account:
@@ -36,6 +26,17 @@ SPOTIFY_REDIRECT_URI=your_spotify_redirect_uri
 ### 3. Set Redirect URI:
 - In your Spotify app settings, add a redirect URI (e.g., `http://localhost:8888/callback`).
 - You will use this redirect URI in your Spotify OAuth setup.
+
+
+## Create a `.env` File
+Then, create a `.env` file in the root directory of your project. This file will store your API credentials and IDs.
+The values you gather from the steps above will be plugged into this `.env` file.
+
+```env
+SPOTIFY_CLIENT_ID=your_spotify_client_id
+SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+SPOTIFY_REDIRECT_URI=your_spotify_redirect_uri
+```
 
 ## Cleanup
 
