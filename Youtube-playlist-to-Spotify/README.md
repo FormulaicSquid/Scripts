@@ -1,8 +1,8 @@
 # Convert a Youtube Playlist to a Spotify Playlist
 
-This script solves a very niche problem of converting a YouTube playlist to a Spotify playlist.
-It uses a csv file containing the details of the videos in a Youtube playlist and the 
-Spotify Web API to search for the corresponding Spotify tracks and add them to a new playlist.
+This script solves a very niche problem of converting YouTube playlists to Spotify playlists.
+It uses a csv file containing the details of the videos in multiple YouTube playlists and the 
+Spotify Web API to search for the corresponding Spotify tracks and add them to new playlists.
 
 
 ## Getting the CSV with the Youtube Playlist
@@ -10,6 +10,7 @@ Spotify Web API to search for the corresponding Spotify tracks and add them to a
 - Go to https://jolantahuba.github.io/YT-Backup/, and follow the instructions to get
 a csv of the desired playlist.
 - Save the csv file in the playlists folder, and give it an appropriate name.
+- You can have multiple CSVs from Multiple playlists at the same time if you desire.
 
 ## Create a `.env` File
 Then, create a `.env` file in the root directory of your project. This file will store your API credentials and IDs.
