@@ -5,3 +5,4 @@ well, so you will find them here.
 
 ## Table of Contents
 1. [Convert a Youtube Playlist to a Spotify Playlist](./Youtube-playlist-to-Spotify/README.md)
+2. [Add bleed to a Trading Card for MakePlayingCards.com](./Adding-Bleed-To-Card/README.md)
