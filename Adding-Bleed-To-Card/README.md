@@ -56,13 +56,24 @@ Run the script:
 
 The script will process all files with the specified extension in the current directory and generate new files with the prefix bleed_.
 
-### 4. Adjust Padding (Optional)
-By default, the script adds a 144-pixel padding to each side of the image. If you wish to adjust this, locate the following line in the script:
+### 4. Adjust Bleed
+The most important thing you need to know, is how bleed is to be calculated. For our use case, we are printing
+cards in makeplayingcard.com. For this specific website, a 300 DPI print requires 32px of bleed, while a 600
+dpi print would require 72.
+
+To calculate DPI, simply acquire the dimensions of your digital image in pixels, and the physical size you will print to
+(63 x 88mm). Then just calculate each dimension using
+
+```
+DPI = Image Dimension in Pixels / Physical Size in Inches
+```
+
+By default, the bleed padding is set to 32px
 
 ```powershell
-$pad = 144
+$pad = 32
 ```
-Change the value 144 to your desired padding size.
+Change the value 32px to your desired padding size.
 
 Example Directory Structure
 ```plaintext
