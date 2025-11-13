@@ -18,13 +18,13 @@ from tqdm import tqdm
 # CONFIGURATION - Edit these variables before running the script
 # =============================================================================
 PLAYLIST_URL = "https://youtube.com/playlist?list=PLkuTuUy1lBRWtYYMTb6oWuQsmo6rVeFHh&si=_5HmvHJjk7Ek7ifs"
-OUTPUT_FILE = "zahin_playlist.csv"
+OUTPUT_FILE = "data/zahin_playlist.csv"
 TIMEOUT_SECONDS = 30  # Timeout for each video fetch (in seconds)
 # =============================================================================
 
 
 class PlaylistMetadataExtractor:
-    def __init__(self, playlist_url: str, output_file: str = "playlist.csv", timeout: int = 30):
+    def __init__(self, playlist_url: str, output_file: str = "data/playlist.csv", timeout: int = 30):
         self.playlist_url = playlist_url
         self.output_file = output_file
         self.timeout = timeout
